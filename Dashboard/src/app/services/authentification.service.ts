@@ -47,8 +47,6 @@ export class AuthentificationService {
     const token: string = this.getToken();
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log(payload);
-
       return payload.exp > (Date.now() / 1000);
     } else {
       return false;
