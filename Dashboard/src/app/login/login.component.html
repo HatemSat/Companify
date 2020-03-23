@@ -1,0 +1,20 @@
+<div class="row justify-content-center mt-5" *ngIf="!isLoggedIn">
+  <div class="col-md-4">
+    <form class="text-center border border-light p-5" [formGroup]="loginForm" (ngSubmit)="login()">
+      <input type="text" class="form-control mb-4" placeholder="Login" formControlName="email">
+      <input type="password" class="form-control mb-4" placeholder="Mot de passe" formControlName="password">
+      <button [disabled]="!loginForm.valid || formSubmitted" class="btn btn-info btn-block" type="submit">Log
+        in</button>
+    </form>
+    <div *ngIf="unauthorized" class="alert alert-danger">
+      Email / mot de passe invalide
+    </div>
+  </div>
+</div>
+
+
+<div class="row justify-content-center mt-5" *ngIf="isLoggedIn">
+  <div class="col-md-4">
+    <h2>Bienvenue sur le backoffice de Companify</h2>
+  </div>
+</div>

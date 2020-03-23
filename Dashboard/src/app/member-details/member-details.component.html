@@ -1,0 +1,128 @@
+<div class="card m-5">
+    <div *ngIf="member">
+
+
+        <div class="form-row m-3 ">
+            <div class="col d-flex">
+                <h2>{{member.lastName}} {{member.firstName}}</h2>
+                <button type="button" (click)="editButton()" class="btn btn-outline-info mt-0 px-3 waves-effect"><i
+            class="fas fa-pen"></i></button>
+            </div>
+        </div>
+
+        <!-- 1ere ligne -->
+        <div class="form-row m-3">
+            <div class="col-md-4">
+                <label class="disabled">Nom</label>
+                <input [(ngModel)]="member.lastName" type="text" class="form-control" [disabled]="!editable">
+            </div>
+
+            <div class="col-md-4">
+                <label class="">Prénom</label>
+                <input type="text" [(ngModel)]="member.firstName" class="form-control" [disabled]="!editable">
+            </div>
+
+            <div class="col-md-4">
+                <label class="">Sexe</label>
+                <select [(ngModel)]="member.gender" class="browser-default custom-select" [disabled]="!editable">
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+          <option value="Autre">Autre</option>
+        </select>
+            </div>
+
+        </div>
+
+        <!-- 2ème ligne -->
+        <div class="form-row m-3">
+
+            <div class="col-md-4">
+                <label class="">Email</label>
+                <input type="text" [(ngModel)]="member.email" class="form-control" [disabled]="!editable">
+            </div>
+
+        </div>
+
+        <!-- 3ème ligne -->
+        <div class="form-row m-3">
+
+            <div class="col-md-4">
+                <label class="">Date de naissance</label>
+                <input type="text" [(ngModel)]="member.birthDate" class="form-control" [disabled]="!editable">
+            </div>
+
+
+        </div>
+
+        <!-- 4 ème ligne -->
+        <div class="form-row m-3 ">
+
+
+            <div class="col-md-4">
+                <label class="">Entreprise</label>
+                <select class="browser-default custom-select" (change)="selectChanged($event.target.value)" [disabled]="!editable">
+          <option *ngFor="let comp of companies" [selected]="comp.name===member.company" [value]="comp.name">
+            {{comp.name}}
+          </option>
+        </select>
+            </div>
+
+            <div class="col-md-4" *ngIf="selectedCompany">
+                <label class="">Equipe</label>
+                <select class="browser-default custom-select" [disabled]="!editable">
+          <option *ngFor="let team of selectedCompany.teams" value="team.name">{{team.name}}
+          </option>
+        </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="disabled">Poste</label>
+                <input type="text" [(ngModel)]="member.post" class="form-control" [disabled]="!editable">
+            </div>
+
+        </div>
+
+        <!-- 5ème ligne -->
+        <div class="form-row m-3">
+
+            <div class="col-md-4">
+                <label class="">Inscription complétée</label>
+                <select [(ngModel)]="member.flags.isRegisterComplete" class="browser-default custom-select" disabled>
+          <option value="true">Oui</option>
+          <option value="false">Non</option>
+        </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="">Status</label>
+                <select [(ngModel)]="member.flags.isDeleted" class="browser-default custom-select" [disabled]="!editable">
+          <option value="true">Actif</option>
+          <option value="false">Inactif</option>
+        </select>
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <!-- Boutons -->
+        <div class="form-row m-3 ">
+            <div class="col ">
+                <button class="btn btn-yellow float-left" (click)="goBack()" type="button">Retour</button>
+            </div>
+            <div class="col">
+                <button [disabled]="" class="btn btn-cyan float-right" (click)="editMember()" type="button">Enregistrer</button>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>

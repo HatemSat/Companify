@@ -1,0 +1,166 @@
+<div class="card m-5">
+  <span *ngIf="expert">
+
+
+    <div class="form-row m-3 ">
+      <div class="col d-flex">
+        <h2>{{expert.lastName}} {{expert.firstName}}</h2>
+        <button type="button" (click)="editButton()" class="btn btn-outline-info mt-0 px-3 waves-effect"><i
+            class="fas fa-pen"></i></button>
+      </div>
+    </div>
+
+    <!-- 1ere ligne -->
+    <div class="form-row m-3">
+      <div class="col-md-4">
+        <label class="disabled">Nom</label>
+        <input [(ngModel)]="expert.lastName" type="text" class="form-control" [disabled]="!editable">
+      </div>
+
+      <div class="col-md-4">
+        <label class="">Prénom</label>
+        <input type="text" [(ngModel)]="expert.firstName" class="form-control" [disabled]="!editable">
+      </div>
+
+      <div class="col-md-4">
+        <label class="">Sexe</label>
+        <select [(ngModel)]="expert.gender" class="browser-default custom-select" [disabled]="!editable">
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- 2ème ligne -->
+    <div class="form-row m-3">
+
+      <div class="col-md-4">
+        <label class="">Email</label>
+        <input type="text" [(ngModel)]="expert.email" class="form-control" [disabled]="!editable">
+      </div>
+
+      <div class="col-md-4">
+        <label class="">Date de naissance</label>
+        <input type="text" [(ngModel)]="expert.birthDate" class="form-control" [disabled]="!editable">
+      </div>
+    </div>
+
+    <!-- 3ème ligne -->
+    <div class="form-row m-3">
+      <div class="col-md-4">
+        <label class="">Date de création</label>
+        <input type="text" [(ngModel)]="expert.creationDate" class="form-control" [disabled]="!editable">
+      </div>
+    </div>
+
+    <!-- 4 ème ligne -->
+  </span>
+
+  <div class="form-row m-3">
+
+    <div class="col-md-3 card align-items-center" *ngIf="expert">
+      <h3>Membres attitrés : </h3>
+      <table class="table table-sm ">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prénom</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let member of expert.assignedMembers">
+            <td>{{member.memberId | slice:0:5}}</td>
+            <td>{{member.lastName}}</td>
+            <td>{{member.firstName}}</td>
+            <td><button type="button" class="btn btn-outline-danger btn-sm px-3 m-0" (click)="removeMember(member)"
+                [disabled]="!editable"><i class="fas fa-trash-alt"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-1"></div>
+
+    <div class="col-md-5 align-items-center card">
+      <h3>Ajouter membres : </h3>
+      <div class="row justify-content-center m-0">
+        <div class="md-form col m-0 p-0" style="">
+          <input type="text" class="form-control" (keyup)="doFilter($event.target.value)">
+          <label for="form1">Rechercher</label>
+        </div>
+      </div>
+
+      <mat-paginator [length]="100" [pageSize]="5" [pageSizeOptions]="[5, 10, 25, 100]">
+      </mat-paginator>
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
+
+        <ng-container matColumnDef="_id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id. </th>
+          <td mat-cell *matCellDef="let element"> {{element._id | slice:0:5}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Prénom </th>
+          <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom </th>
+          <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="add">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  </th>
+          <td mat-cell *matCellDef="let element"> <button type="button" class="btn btn-outline-info btn-sm px-3 m-0"
+              (click)="addMember(element)" [disabled]="!editable">+</button></td>
+        </ng-container>
+
+
+
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+    </div>
+
+
+
+  </div>
+
+  <!-- 5ème ligne -->
+  <span *ngIf="expert">
+
+    <div class="form-row m-3">
+      <div class="col-md-4">
+        <label class="">Expert Inactif (supprimé)</label>
+        <select [(ngModel)]="expert.flags.isDeleted" class="browser-default custom-select" [disabled]="!editable">
+          <option value="true">Oui</option>
+          <option value="false">Non</option>
+        </select>
+      </div>
+    </div>
+
+  </span>
+
+
+
+
+  <!-- Boutons -->
+  <div class="form-row m-3 ">
+    <div class="col ">
+      <button class="btn btn-yellow float-left" (click)="goBack()" type="button">Retour</button>
+    </div>
+    <div class="col">
+      <button [disabled]="" class="btn btn-cyan float-right" (click)="editExpert()" type="button">Enregistrer</button>
+    </div>
+  </div>
+
+
+</div>

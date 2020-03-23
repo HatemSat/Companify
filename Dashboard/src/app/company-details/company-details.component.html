@@ -1,0 +1,141 @@
+<div class="card m-5">
+    <div *ngIf="company">
+
+
+        <div class="form-row m-3 ">
+            <div class="col-md-5 d-flex">
+                <h2>{{company.name}}</h2>
+                <button type="button" (click)="editButton()" class="btn btn-outline-info mt-0 px-3 waves-effect"><i
+            class="fas fa-pen"></i></button>
+            </div>
+        </div>
+
+        <!-- 1ere ligne -->
+        <div class="form-row m-3">
+            <div class="col-md-4">
+                <label class="disabled">Nom</label>
+                <input [(ngModel)]="company.name" type="text" class="form-control" [disabled]="!editable">
+            </div>
+
+            <div class="col-md-4">
+                <label class="">Activité</label>
+                <input type="text" [(ngModel)]="company.activity" class="form-control" [disabled]="!editable">
+            </div>
+
+            <div class="col-md-4">
+                <label class="">Siret</label>
+                <input type="text" [(ngModel)]="company.siret" class="form-control" [disabled]="!editable">
+            </div>
+
+        </div>
+
+        <!-- 2ème ligne -->
+        <div class="form-row m-3">
+
+            <div class="col-md-3 mx-2">
+                <label class="">Licenses utilisées</label>
+                <input type="text" [(ngModel)]="company.usedLicenses" class="form-control" [disabled]="true">
+            </div>
+            <div class="col-md-3 mx-2">
+                <label class="">Licenses totales</label>
+                <input type="text" [(ngModel)]="company.totalLicenses" class="form-control" [disabled]="!editable">
+            </div>
+            <div class="col-md-3 mx-2">
+                <label class="">Date d'ajout</label>
+                <input type="text" [(ngModel)]="company.creationDate" class="form-control" disabled>
+            </div>
+
+
+
+        </div>
+
+        <!-- 3ème ligne Contacts -->
+        <div class="form-row m-3">
+
+            <div class="col-lg-3 mx-2 card" *ngFor="let contact of company.contacts;let t = index;">
+                <div class="row mx-5 align-items-center">
+                    <label class="">Contact #{{t+1}}</label>
+                    <button type="button" class="btn btn-outline-danger px-3 ml-auto" (click)="removeContact(contact)" [disabled]="!editable"><i class="fas fa-trash-alt"></i></button>
+                </div>
+
+                <div class="row custom-control custom-checkbox">
+                    <div class="col mx-5">
+                        <input [(ngModel)]="contact.isMainContact" type="checkbox" class="custom-control-input" [disabled]="!editable" id="mainContact{{t}}">
+                        <label class="custom-control-label" for="mainContact{{t}}">Contact principal ?</label>
+                    </div>
+                </div>
+
+                <span class="mx-5">
+          <div class="row">
+            <div class="col ">
+              <label class="">Prénom :</label>
+              <input type="text" [(ngModel)]="contact.firstName" class="form-control ml-3 my-2" [disabled]="!editable">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col ">
+              <label class="">Nom :</label>
+              <input type="text" [(ngModel)]="contact.lastName" class="form-control ml-3 my-2" [disabled]="!editable">
+            </div>
+          </div>
+
+          <label class="">Tèléphone(s) :</label>
+          <div class="row" *ngFor="let tel of contact.phoneNumbers">
+            <div class="col">
+              <input type="text" [(ngModel)]="tel.phoneNumber" class="form-control ml-3 my-2" [disabled]="!editable">
+
+            </div>
+            <div class="">
+              <button type="button" class="btn btn-outline-danger p-0" (click)="removePhone(contact,tel)"
+                [disabled]="!editable"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn-outline-info px-3 ml-auto" (click)="addPhone(contact)">+</button>
+
+          </div>
+
+          <label class="">Email(s) :</label>
+          <div class="row" *ngFor="let mail of contact.emails">
+            <div class="col">
+              <input type="text" [(ngModel)]="mail.email" class="form-control ml-3 my-2" [disabled]="!editable">
+            </div>
+            <div class="">
+              <button type="button" class="btn btn-outline-danger  p-0" (click)="removeEmail(contact,mail)"
+                [disabled]="!editable"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn-outline-info px-3 ml-auto" (click)="addEmail(contact)">+</button>
+          </div>
+        
+
+        </span>
+            </div>
+            <div class="col">
+                <button type="button" class="btn btn-outline-info px-3" (click)="addContact()">+</button>
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Boutons -->
+        <div class="form-row m-3 ">
+            <div class="col ">
+                <button class="btn btn-yellow float-left" (click)="goBack()" type="button">Retour</button>
+            </div>
+            <div class="col">
+                <button [disabled]="" class="btn btn-cyan float-right" (click)="saveCompany()" type="button">Enregistrer</button>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+
+</div>

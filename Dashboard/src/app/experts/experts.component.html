@@ -1,0 +1,150 @@
+<!-- Search table -->
+<div class="row">
+  <div class="card" style="width: 100%;">
+    <div class="row justify-content-center">
+      <div class="col-md-6 justify-content-center">
+        <div class="md-form">
+          <input type="text" class="form-control" (keyup)="doFilter($event.target.value)">
+          <label for="form1">Rechercher</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Experts Table -->
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
+
+  <ng-container matColumnDef="_id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Id. </th>
+    <td mat-cell *matCellDef="let element"> {{element._id | slice:0:5}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Prénom </th>
+    <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom </th>
+    <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+    <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="birthDate">
+    <th mat-header-cell *matHeaderCellDef> Date de naissance </th>
+    <td mat-cell *matCellDef="let element"> {{element.birthDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="gender">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Sexe </th>
+    <td mat-cell *matCellDef="let element"> {{element.gender}} </td>
+  </ng-container>
+
+
+  <!-- Assigned members -->
+  <ng-container matColumnDef="assignedMembers">
+    <th mat-header-cell *matHeaderCellDef  mat-sort-header> Membres </th>
+    <td mat-cell *matCellDef="let element"> {{element.assignedMembers.length}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="creationDate">
+    <th mat-header-cell *matHeaderCellDef> Date de création </th>
+    <td mat-cell *matCellDef="let element"> {{element.creationDate}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Détails">
+    <th mat-header-cell *matHeaderCellDef>Détails</th>
+    <td mat-cell *matCellDef="let element">
+      <button type="button" routerLink="/expert-details/{{element._id}}" routerLinkActive="router-link-active"
+        class="btn btn-outline-secondary waves-effect px-3"><i class="fas fa-address-card"
+          aria-hidden="true"></i></button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+<!-- Ajouter un expert -->
+
+ <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="">
+      <button type="button" class="btn btn-outline-default btn-sm waves-effect">Ajouter un expert</button>
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="card">
+    <form class="mx-4" [formGroup]="expertForm" (ngSubmit)="createExpert()"> -->
+      <!-- Première ligne  -->
+      <div class="form-row mt-3">
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Nom</label>
+            <input type="text" class="form-control" formControlName="lastName">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Prénom</label>
+            <input type="text" class="form-control" formControlName="firstName">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Email</label>
+            <input type="text" class="form-control" formControlName="email">
+            <div *ngIf="email.touched && email.getError('email')" class="alert alert-danger">
+              Email invalide
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Deuxième ligne -->
+    <div class="form-row mt-3">
+
+        <div class="md-form col-md-4">
+          <input matInput [matDatepicker]="picker" placeholder="Date de naissance" formControlName="birthDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </div>
+
+        <div class="md-form col-md-4">
+          <select class="browser-default custom-select" formControlName="gender">
+            <option value="null" disabled>Sexe</option>
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+
+      </div>
+
+
+      <div class="text-center py-4 mt-3">
+        <button [disabled]="!expertForm.valid" class="btn btn-cyan" type="submit">Enregistrer</button>
+      </div>
+    </form>
+  </div>
+
+
+
+</mat-expansion-panel>

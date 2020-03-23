@@ -1,0 +1,262 @@
+<!-- Search table -->
+<div class="row">
+  <div class="card" style="width: 100%;">
+    <div class="row justify-content-center">
+      <div class="col-md-6 justify-content-center">
+        <div class="md-form">
+          <input type="text" class="form-control" (keyup)="doFilter($event.target.value)">
+          <label for="form1">Rechercher</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Members Table -->
+<mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
+
+  <ng-container matColumnDef="Nom">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nom. </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Addresse">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Addresse </th>
+    <td mat-cell *matCellDef="let element"> {{element.address}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Siret">
+    <th mat-header-cell *matHeaderCellDef> Siret </th>
+    <td mat-cell *matCellDef="let element"> {{element.siret}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Activité">
+    <th mat-header-cell *matHeaderCellDef> Activité </th>
+    <td mat-cell *matCellDef="let element"> {{element.activity}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Licenses">
+    <th mat-header-cell *matHeaderCellDef> Licenses </th>
+    <td mat-cell *matCellDef="let element"> {{element.usedLicenses}} / {{element.totalLicenses}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="Détails">
+    <th mat-header-cell *matHeaderCellDef>Détails</th>
+    <td mat-cell *matCellDef="let element">
+      <button type="button" routerLink="/company-details/{{element._id}}" class="btn btn-outline-secondary waves-effect px-3"><i class="fas fa-address-card"
+          aria-hidden="true"></i></button>
+    </td>
+  </ng-container>
+
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>
+
+
+
+
+
+<!-- Ajouter une entreprise -->
+<mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [expanded]="true">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="">
+      <button type="button" class="btn btn-outline-default btn waves-effect">Ajouter une entreprise</button>
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="card">
+    <h4 class="card-title m-3">Information générales</h4>
+    <form class="mx-4" [formGroup]="companyForm" (ngSubmit)="createCompany()">
+      <!-- Première ligne  -->
+      <div class="form-row mt-3">
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Nom</label>
+            <input type="text" class="form-control" formControlName="name">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Siret</label>
+            <input type="text" class="form-control" formControlName="siret">
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Activité</label>
+            <input type="text" class="form-control" formControlName="activity">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-row mt-3">
+
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Addresse</label>
+            <input type="text" class="form-control" formControlName="address">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="md-form">
+            <label>Licenses</label>
+            <input type="number" class="form-control" formControlName="totalLicenses">
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- Teams -->
+      <div class="card m-3 p-3 border border-primary">
+        <div class="form-row">
+          <div formArrayName="teams" *ngFor="let team of teamFormGroup.controls; let i = index;"
+            class="col-md-3 mx-0 row">
+            <h4 class="card-title">Equipe {{i+1}}</h4>
+            <div [formGroupName]="i" class="md-form  ">
+              <label>Nom</label>
+              <input type="text" class="form-control" formControlName="name">
+
+              <!-- <div class="md-form col-md-3"> -->
+              <!-- <button class="btn btn-outline-danger waves-effect" type="button" (click)="removeTeam(i)"><i class="fas fa-trash-alt" aria-hidden="true"></i>
+                  </button> -->
+              <!-- </div> -->
+
+            </div>
+            <div class="md-form">
+              <button type="button" class="btn btn-outline-danger px-3" (click)="removeTeam(i)"><i
+                  class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <div formArrayName="teams" *ngFor="let team of teamFormGroup.controls; let i = index;">
+          <div class="card m-3 p-3 border border-primary">
+            <h4 class="card-title">Equipe {{i+1}}</h4>
+            <div [formGroupName]="i" class="form-row mt-3">
+              <div class="md-form col-md-4">
+                <label>Nom</label>
+                <input type="text" class="form-control" formControlName="name">
+              </div>
+
+              <div class="md-form col-md-4">
+                <button class="btn btn-outline-danger waves-effect" type="button" (click)="removeTeam(i)"> Supprimer
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div> -->
+
+      <!-- ajouter équipe -->
+      <div class="row align-content-center">
+        <div class="text-center py-4 mt-3 mr-auto">
+          <button class="btn btn-primary " type="button" (click)="addTeam()"> Ajouter une équipe </button>
+        </div>
+      </div>
+
+
+
+
+      <!-- contact -->
+      <div formArrayName="contacts" *ngFor="let contact of contactFormGroup.controls; let i = index;">
+        <div class="card m-3 p-3 border border-primary">
+          <h4 class="card-title">Contact {{i+1}}</h4>
+          <div [formGroupName]="i">
+
+            <div class="form-row">
+              <div class="md-form col-md-3">
+                <label>Nom</label>
+                <input type="text" class="form-control" formControlName="lastName">
+              </div>
+              <div class="md-form col-md-3">
+                <label>Prénom</label>
+                <input type="text" class="form-control" formControlName="firstName">
+              </div>
+              <div class="md-form col-md-3">
+                <label>Role</label>
+                <input type="text" class="form-control" formControlName="role">
+              </div>
+            </div>
+
+            <!-- ---- -->
+            <div class="form-row ">
+                <div class="md-form col-md-2" formArrayName="emails"
+                  *ngFor="let email of contact['controls'].emails['controls']; let k = index;">
+                  <span [formGroupName]="k" class="form-row mt-3">
+                    <label>Email {{k+1}}</label>
+                    <input type="text" class="form-control" formControlName="email">
+                    <button type="button" class="btn btn-outline-danger px-3" (click)="removeEmail(k)"><i
+                        class="fas fa-trash-alt"></i></button>
+                  </span>
+                </div>
+                <div class="col-md-1 d-flex align-items-center">
+                  <button type="button" class="btn btn-outline-info px-3" (click)="addEmail()">+</button>
+                </div>
+              </div>
+
+            <div class="form-row ">
+              <div class="md-form col-md-2" formArrayName="phoneNumbers"
+                *ngFor="let phone of contact['controls'].phoneNumbers['controls']; let j = index;">
+                <span [formGroupName]="j" class="form-row mt-3">
+                  <label>Téléphone {{j+1}}</label>
+                  <input type="text" class="form-control" formControlName="phoneNumber">
+                  <button type="button" class="btn btn-outline-danger px-3" (click)="removePhoneNumber(j)"><i
+                      class="fas fa-trash-alt"></i></button>
+                </span>
+              </div>
+              <div class="col-md-1 d-flex align-items-center">
+                <button type="button" class="btn btn-outline-info px-3" (click)="addPhoneNumber()">+</button>
+              </div>
+            </div>
+
+
+            <div class="form-row my-0">
+              <div class="col-md-2  align-items-center d-flex mr-auto">
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="mainContact" formControlName="isMainContact">
+                      <label class="custom-control-label" for="mainContact">Contact principal ?</label>
+                    </div>
+              </div>
+              <div class="md-form col-md-2 ml-auto">
+                <button type="button" class="btn btn-outline-danger px-3" (click)="removeContact(i)">Supprimer
+                  contact</button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="row align-content-center">
+        <div class="text-center py-4 mt-3 mr-auto">
+          <button class="btn btn-primary " type="button" (click)="addContact()"> Ajouter un contact </button>
+        </div>
+        <div class="text-center py-4 mt-3 mr-4 ml-auto">
+          <button [disabled]="!companyForm.valid" class="btn btn-dark-green " type="submit">Enregistrer</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+
+
+</mat-expansion-panel>
