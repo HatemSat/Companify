@@ -24,7 +24,7 @@
     "@types/underscore": "^1.9.4",
     "angular-datatables": "^8.0.0",
     "chart.js": "^2.9.3",
-    "datatables.net": "^1.10.20",
+    "datatables.net": "^1.10.22",
     "datatables.net-dt": "^1.10.20",
     "jquery": "^3.4.1",
     "mdbootstrap": "^4.8.10",
